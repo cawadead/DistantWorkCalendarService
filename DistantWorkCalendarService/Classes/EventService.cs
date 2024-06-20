@@ -72,7 +72,7 @@ namespace DistantWorkCalendarService.Classes
 
         public async Task<Event?> GetEventAsync(int id, CancellationToken cancellationToken)
         {
-            var events = await _context.Events.FirstOrDefaultAsync(cancellationToken);
+            var events = await _context.Events.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
             return events;
         }
