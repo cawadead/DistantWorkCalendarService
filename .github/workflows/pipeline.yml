@@ -1,0 +1,11 @@
+name: CI/CD
+
+run-name: ❌ ${{ github.actor }}, this is the main branch. Choose another! ❌
+
+on: workflow_dispatch
+
+jobs:
+  Choose-another-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Choose another branch"
