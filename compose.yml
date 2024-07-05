@@ -1,0 +1,9 @@
+services:
+  distant-work-calendar-service:
+    image: ${APP_NAME:-distant-work-calendar-service}:${USE_TAG:-latest}
+    container_name: ${APP_NAME:-distant-work-calendar-service}
+    ports:
+      - ${APP_PORT:-7466}:80
+    restart: always
+    environment:
+      DATABASE_CONNECTION_STRING: ${DATABASE_CONNECTION_STRING}
