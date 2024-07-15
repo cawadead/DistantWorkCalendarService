@@ -13,63 +13,6 @@ namespace DistantWorkCalendarService.Classes
             _logger = logger;
         }
 
-        public Event? GetEvent(int id)
-        {
-            var events = _context.Events.FirstOrDefault();
-
-            return events;
-        }
-
-        public ICollection<Event> GetEvents()
-        {
-            var events = _context.Events.ToArray();
-
-            return events;
-        }
-
-        public ICollection<Event> GetEvents(DateTime start, DateTime end)
-        {
-            start = new DateTime(start.Ticks, DateTimeKind.Utc);
-            end = new DateTime(end.Ticks, DateTimeKind.Utc);
-
-            var events = _context.Events
-                .Where(x => (x.StartDate >= start || x.EndDate >= start) && (x.StartDate <= end || x.EndDate <= end))
-                .ToArray();
-
-            return events;
-        }
-
-        public Event AddEvent(Event event_)
-        {
-            _context.Events.Add(event_);
-            _context.SaveChanges();
-
-            return event_;
-        }
-
-        public Event EditEvent(int id, Event event_)
-        {
-            event_.Id = id;
-            _context.Events.Update(event_);
-            _context.SaveChanges();
-
-            return event_;
-        }
-
-        public int? DeleteEvent(int id)
-        {
-            var event_ = GetEvent(id);
-            if (event_ is null)
-            {
-                return null;
-            }
-
-            _context.Events.Remove(event_);
-            _context.SaveChanges();
-
-            return id;
-        }
-
         public async Task<Event?> GetEventAsync(int id, CancellationToken cancellationToken)
         {
             var events = await _context.Events.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
