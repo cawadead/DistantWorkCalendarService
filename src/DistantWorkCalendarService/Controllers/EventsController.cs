@@ -21,6 +21,18 @@ namespace DistantWorkCalendarService.Controllers
         }
 
         /// <summary>
+        /// Получение ивентов по странице и количеству ивентов
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        [HttpGet("GetByPage")]
+        public async Task<IActionResult> GetEventByPage(int pageNumber, int pageSize, CancellationToken cancellationToken)
+        {
+            return Ok(await _eventService.GetEventsByPageAsync(pageNumber, pageSize, cancellationToken));
+        }
+
+        /// <summary>
         /// Получение ивентов
         /// </summary>
         /// <param name="start"></param>
