@@ -13,9 +13,11 @@ namespace DistantWorkCalendarService.Classes
             _logger = logger;
         }
 
-        public async Task<ICollection<Event>> GetEventsByPageAsync(int pageNumber, int pageSize, CancellationToken cancellationToken)
+        public async Task<ICollection<EventStatus>> GetEventsByPageAsync(int eventId, int pageNumber, int pageSize, CancellationToken cancellationToken)
         {
-            var events = await _context.Events.Skip(pageNumber * pageSize).Take(pageSize).ToArrayAsync(cancellationToken);
+            var events = await _context.EventStatuses
+                .Where(e => e.EventId == eventId)
+                .Skip(pageNumber * pageSize).Take(pageSize).ToArrayAsync(cancellationToken);
 
             return events;
         }
