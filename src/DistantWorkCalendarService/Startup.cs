@@ -1,4 +1,5 @@
 ﻿using DistantWorkCalendarService.Classes;
+using DistantWorkCalendarService.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.Text.Json.Serialization;
@@ -20,6 +21,7 @@ namespace DistantWorkCalendarService
 
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddControllers(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true)
                 .AddJsonOptions(options =>
                 {
@@ -29,6 +31,7 @@ namespace DistantWorkCalendarService
                 });
             services.AddDbContext<Context>(options => options.UseNpgsql(_connectionString));
             services.AddScoped<EventService>();
+            services.AddScoped<DbSeed>();
             services.AddLogging();
             services.AddSwaggerGen(options =>
             {

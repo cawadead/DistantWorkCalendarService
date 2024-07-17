@@ -13,6 +13,15 @@ namespace DistantWorkCalendarService.Classes
             _logger = logger;
         }
 
+        public async Task<ICollection<EventStatus>> GetEventsByPageAsync(int eventId, int pageNumber, int pageSize, CancellationToken cancellationToken)
+        {
+            var events = await _context.EventStatuses
+                .Where(e => e.EventId == eventId)
+                .Skip(pageNumber * pageSize).Take(pageSize).ToArrayAsync(cancellationToken);
+
+            return events;
+        }
+
         public async Task<Event?> GetEventAsync(int id, CancellationToken cancellationToken)
         {
             var events = await _context.Events.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
@@ -27,12 +36,12 @@ namespace DistantWorkCalendarService.Classes
             return events;
         }
 
-        public async Task<ICollection<Event>> GetEventsAsync(DateTime start, DateTime end, CancellationToken cancellationToken)
+        public async Task<ICollection<EventStatus>> GetEventsAsync(DateTime start, DateTime end, CancellationToken cancellationToken)
         {
             start = new DateTime(start.Ticks, DateTimeKind.Utc);
             end = new DateTime(end.Ticks, DateTimeKind.Utc);
 
-            var events = await _context.Events
+            var events = await _context.EventStatuses
                 .Where(x => (x.StartDate >= start || x.EndDate >= start) && (x.StartDate <= end || x.EndDate <= end))
                 .ToArrayAsync(cancellationToken);
 

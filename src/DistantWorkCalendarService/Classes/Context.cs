@@ -15,16 +15,35 @@ namespace DistantWorkCalendarService.Classes
 
         public DbSet<Event> Events { get; set; }
 
+        public DbSet<EventStatus> EventStatuses { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Event>().ToTable("events", SCHEMA);
             modelBuilder.Entity<Event>().HasKey(x => x.Id);
-            modelBuilder.Entity<Event>().Property(x => x.Id).HasColumnName("id").ValueGeneratedOnAdd();
-            modelBuilder.Entity<Event>().Property(x => x.Title).HasColumnName("title").IsRequired();
-            modelBuilder.Entity<Event>().Property(x => x.Type).HasColumnName("type").IsRequired();
-            modelBuilder.Entity<Event>().Property(x => x.StartDate).HasColumnName("start_date").IsRequired();
-            modelBuilder.Entity<Event>().Property(x => x.EndDate).HasColumnName("end_date").IsRequired();
+            modelBuilder.Entity<Event>()
+                .HasMany(e => e.EventStatuses)
+                .WithOne(e => e.Event)
+                .HasForeignKey(e => e.EventId);
 
+            modelBuilder.Entity<Event>().Property(x => x.Id).HasColumnName("id").ValueGeneratedOnAdd();
+            modelBuilder.Entity<Event>().Property(x => x.CreatedDate).HasColumnName("created_date").IsRequired();
+            modelBuilder.Entity<Event>().Property(x => x.ModifiedDate).HasColumnName("modified_date").IsRequired();
+            modelBuilder.Entity<Event>().Property(x => x.IsDeleted).HasColumnName("is_deleted").IsRequired();
+
+            modelBuilder.Entity<EventStatus>().ToTable("statuses", SCHEMA);
+            modelBuilder.Entity<EventStatus>().HasKey(x => x.Id);
+            modelBuilder.Entity<EventStatus>().Property(x => x.Id).HasColumnName("id").ValueGeneratedOnAdd();
+            modelBuilder.Entity<EventStatus>().Property(x => x.Title).HasColumnName("title").IsRequired();
+            modelBuilder.Entity<EventStatus>().Property(x => x.EventType).HasColumnName("event_type").IsRequired();
+            modelBuilder.Entity<EventStatus>().Property(x => x.StartDate).HasColumnName("start_date").IsRequired();
+            modelBuilder.Entity<EventStatus>().Property(x => x.EndDate).HasColumnName("end_date").IsRequired();
+            modelBuilder.Entity<EventStatus>().Property(x => x.CreatedDate).HasColumnName("created_date").IsRequired();
+
+            modelBuilder.Entity<EventStatus>()
+                .HasOne(e => e.Event)
+                .WithMany(e => e.EventStatuses)
+                .HasForeignKey(e => e.EventId);
 
             base.OnModelCreating(modelBuilder);
         }
