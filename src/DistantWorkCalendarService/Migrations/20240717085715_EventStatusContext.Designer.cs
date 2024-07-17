@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DistantWorkCalendarService.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20240717072446_EventStatusContext")]
+    [Migration("20240717085715_EventStatusContext")]
     partial class EventStatusContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

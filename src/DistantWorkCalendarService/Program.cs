@@ -1,10 +1,17 @@
 using DistantWorkCalendarService;
+using DistantWorkCalendarService.Data;
 
 public class Program
 {
     public static void Main(string[] args)
     {
-        CreateHostBuilder(args).Build().Run();
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        var host = CreateHostBuilder(args).Build();
+
+        using (var scope = host.Services.CreateScope())
+            scope.ServiceProvider.GetRequiredService<DbSeed>().InitializeAsync().Wait();
+
+        host.Run();
     }
 
     public static IHostBuilder CreateHostBuilder(string[] args)
