@@ -13,6 +13,6 @@ namespace DistantWorkCalendarService.Classes
         public DateTime EndDate { get; set; }
         public DateTime CreatedDate { get; set; }
         public Event Event { get; set; }
-
+        public int EventId { get; set; }
     }
 }

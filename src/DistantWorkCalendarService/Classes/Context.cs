@@ -15,6 +15,8 @@ namespace DistantWorkCalendarService.Classes
 
         public DbSet<Event> Events { get; set; }
 
+        public DbSet<EventStatus> EventStatuses { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Event>().ToTable("events", SCHEMA);
@@ -22,7 +24,7 @@ namespace DistantWorkCalendarService.Classes
             modelBuilder.Entity<Event>()
                 .HasMany(e => e.EventStatuses)
                 .WithOne(e => e.Event)
-                .HasForeignKey(e => e.Id);
+                .HasForeignKey(e => e.EventId);
 
             modelBuilder.Entity<Event>().Property(x => x.Id).HasColumnName("id").ValueGeneratedOnAdd();
             modelBuilder.Entity<Event>().Property(x => x.CreatedDate).HasColumnName("created_date").IsRequired();
@@ -37,6 +39,11 @@ namespace DistantWorkCalendarService.Classes
             modelBuilder.Entity<EventStatus>().Property(x => x.StartDate).HasColumnName("start_date").IsRequired();
             modelBuilder.Entity<EventStatus>().Property(x => x.EndDate).HasColumnName("end_date").IsRequired();
             modelBuilder.Entity<EventStatus>().Property(x => x.CreatedDate).HasColumnName("created_date").IsRequired();
+
+            modelBuilder.Entity<EventStatus>()
+                .HasOne(e => e.Event)
+                .WithMany(e => e.EventStatuses)
+                .HasForeignKey(e => e.EventId);
 
             base.OnModelCreating(modelBuilder);
         }

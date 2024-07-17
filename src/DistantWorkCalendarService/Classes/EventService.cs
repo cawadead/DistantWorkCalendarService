@@ -34,12 +34,12 @@ namespace DistantWorkCalendarService.Classes
             return events;
         }
 
-        public async Task<ICollection<Event>> GetEventsAsync(DateTime start, DateTime end, CancellationToken cancellationToken)
+        public async Task<ICollection<EventStatus>> GetEventsAsync(DateTime start, DateTime end, CancellationToken cancellationToken)
         {
             start = new DateTime(start.Ticks, DateTimeKind.Utc);
             end = new DateTime(end.Ticks, DateTimeKind.Utc);
 
-            var events = await _context.Events
+            var events = await _context.EventStatuses
                 .Where(x => (x.StartDate >= start || x.EndDate >= start) && (x.StartDate <= end || x.EndDate <= end))
                 .ToArrayAsync(cancellationToken);
 
